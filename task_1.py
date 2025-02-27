@@ -16,3 +16,14 @@
 # Приклад:
 
 # Якщо сьогодні 5 травня 2021 року, виклик get_days_from_today("2021-10-09") повинен повернути −157, оскільки 9 жовтня 2021 року є на 157 днів пізніше від 5 травня 2021 року.
+
+from datetime import datetime
+now = datetime.now()
+print(now)
+
+def get_days_from_today(date):
+   date = datetime.strptime(date, "%Y-%m-%d")
+   return (now - date).days  
+
+res = get_days_from_today("2025-02-10")
+print(res)
