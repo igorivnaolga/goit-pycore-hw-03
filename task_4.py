@@ -52,3 +52,42 @@
 # ]
 
 # Цей список містить інформацію про те, кого і коли потрібно привітати з днем народження.
+
+from datetime import datetime, timedelta
+
+def get_upcoming_birthdays(users):
+    current_day = datetime.today().date()
+    upcoming_birthdays = []
+
+    for user in users:
+       name = user["name"]
+       birthday = datetime.strptime(user["birthday"], "%Y.%m.%d").date()
+    
+       birthday_this_year = birthday.replace(year=current_day.year)
+
+       if birthday_this_year < current_day:
+           birthday_this_year = birthday_this_year.replace(year=current_day.year + 1)
+
+       days_before_birthday = (birthday_this_year - current_day).days
+       
+       if 0 <= days_before_birthday <= 7:
+            if birthday_this_year.weekday() in (5, 6): 
+                birthday_this_year += timedelta(days=(7 - birthday_this_year.weekday()))
+            
+            upcoming_birthdays.append({
+                "name": name,
+                "congratulation_date": birthday_this_year.strftime("%Y.%m.%d")
+            })
+    
+    return upcoming_birthdays
+
+
+users = [
+    {"name": "John Doe", "birthday": "1985.01.23"},
+    {"name": "Jane Smith", "birthday": "1990.01.27"},
+    {"name": "Chloe Black", "birthday": "1985.03.01"},
+    {"name": "Viki Brown", "birthday": "1990.03.02"}
+]
+
+upcoming_birthdays = get_upcoming_birthdays(users)
+print("Список привітань на цьому тижні:", upcoming_birthdays)
