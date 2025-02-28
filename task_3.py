@@ -55,3 +55,38 @@
 # У результаті ви повинні отримати список номерів у стандартному форматі, готових до використання у SMS-розсилці.
 
 # Нормалізовані номери телефонів для SMS-розсилки: ['+380671234567', '+380952345678', '+380441234567', '+380501234567', '+380501233234', '+380503451234', '+380508889900', '+380501112222', '+380501112211']
+
+
+import re
+
+def normalize_phone(phone_number):
+    
+    phone_number = phone_number.strip()
+    patern = r"(?!^\+)[^\d]"
+    replacement = ""
+    formated_number = re.sub(patern, replacement, phone_number)
+    
+    
+    if formated_number.startswith("+38"):
+        return  formated_number
+    if formated_number.startswith("38"):
+        return "+" + formated_number
+    else:
+        return "+38" + formated_number
+    
+
+raw_numbers = [
+    "067\\t123 4567",
+    "(095) 234-5678\\n",
+    "+380 44 123 4567",
+    "38050123+4567",
+    "    +38(050)1+23-32-34",
+    "     0503451234",
+    "(050)8889900",
+    "38050-111-22-22",
+    "38050 111 22 11   ",
+]
+
+
+sanitized_numbers = [normalize_phone(num) for num in raw_numbers]
+print("Нормалізовані номери телефонів для SMS-розсилки:", sanitized_numbers)
